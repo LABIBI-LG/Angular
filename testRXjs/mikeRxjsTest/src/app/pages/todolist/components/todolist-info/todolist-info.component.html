@@ -1,0 +1,9 @@
+<section class="mt-3">
+  @if(data$ | async; as data){
+  <p>Total: {{ data.todos.length }}</p>
+  <p>
+    Completed:
+    {{ todosCont }}
+  </p>
+  }
+</section>

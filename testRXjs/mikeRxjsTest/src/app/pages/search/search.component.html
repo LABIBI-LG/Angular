@@ -1,0 +1,105 @@
+<!-- 搜尋區塊 -->
+<section>
+  <label for="searchInput" class="text-3xl">Search:</label>
+  <div class="relative">
+    <input
+      #searchInput
+      type="text"
+      id="searchInput"
+      name="searchInput"
+      [disabled]="loading"
+      (keyup)="onKeyUp($event)"
+      class="border border-gray-400 rounded text-xl"
+    />
+    <button
+      title="button"
+      (click)="search(searchInput.value); fuzzyQueryData = []"
+      [disabled]="loading"
+    >
+      搜尋 @if (loading) {
+      <span class="spinner"></span>
+      }
+    </button>
+
+    <!-- 模糊查詢 -->
+    @if (fuzzyQueryData.length > 0) {
+    <ul
+      class="border-purple-500 border rounded inline-block py-3 mt-2 absolute top-6 left-0 bg-white"
+    >
+      @for (item of fuzzyQueryData; track $index) {
+      <li
+        class="px-3 hover:bg-purple-300 cursor-pointer"
+        (click)="searchInput.value = item; fuzzyQueryData = []"
+      >
+        {{ item }}
+      </li>
+      }
+    </ul>
+    }
+  </div>
+</section>
+
+<!-- 主要內容 -->
+<section class="mt-5">
+  <!-- 功能區塊 -->
+  @if(data.length > 0) {
+  <div class="mb-3">
+    <!-- 切換每頁筆數 -->
+    <select
+      #select
+      class="border border-purple-500 text-purple-500 px-2 py-1 rounded cursor-pointer"
+      title="Select an option"
+      (change)="search(searchData.tempKeyword, select.value)"
+    >
+      <option value="10" selected>10</option>
+      <option value="20">20</option>
+      <option value="30">30</option>
+    </select>
+    <!-- 上一頁 -->
+    <button
+      title="button"
+      (click)="changePage(-1, select.value)"
+      [disabled]="loading"
+    >
+      上一頁
+    </button>
+    <!-- 下一頁 -->
+    <button
+      title="button"
+      (click)="changePage(1, select.value)"
+      [disabled]="loading"
+    >
+      下一頁
+    </button>
+  </div>
+  }
+  <!-- 資料表格 -->
+  <table class="table-auto">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th
+          class="cursor-pointer hover:text-[#4bb6f0]"
+          (click)="changeSort('stars')"
+        >
+          Stars
+        </th>
+        <th
+          class="cursor-pointer hover:text-[#4bb6f0]"
+          (click)="changeSort('forks')"
+        >
+          Forks
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+      @for (item of data; track $index) {
+      <tr>
+        <td>{{ item.full_name }}</td>
+        <td>{{ item.stargazers_count }}</td>
+        <td>{{ item.forks_count }}</td>
+      </tr>
+      }
+    </tbody>
+  </table>
+</section>

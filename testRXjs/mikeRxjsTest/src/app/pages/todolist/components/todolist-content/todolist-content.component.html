@@ -1,0 +1,18 @@
+<section>
+  @if(data$ | async; as data){
+  <ul>
+    @for(item of data.todos ; track $index){
+    <li>
+      <input
+        type="checkbox"
+        id="item-{{ $index }}"
+        name="item-{{ $index }}"
+        [checked]="item.done"
+        (change)="updateItem(item.id)"
+      />
+      <label for="item-{{ $index }}" class="text-xl">{{ item.name }}</label>
+    </li>
+    }
+  </ul>
+  }
+</section>

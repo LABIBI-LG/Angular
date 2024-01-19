@@ -1,0 +1,11 @@
+th,td{
+  @apply px-3;
+}
+th{
+  @apply bg-gray-200;
+}
+td{
+  @apply border-b border-gray-300;
+}
+
+
