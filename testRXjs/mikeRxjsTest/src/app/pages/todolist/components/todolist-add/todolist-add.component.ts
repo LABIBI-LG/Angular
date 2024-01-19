@@ -10,6 +10,7 @@ import { SubjectService } from '../../services/subject.service';
 })
 export class TodolistAddComponent {
   private _subjectService = inject(SubjectService);
+
   addItem(name: string): void {
     if (!name) {
       return;

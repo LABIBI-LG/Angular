@@ -8,12 +8,13 @@
       id="searchInput"
       name="searchInput"
       [disabled]="loading"
-      (keyup)="onKeyUp($event)"
+      (focus)="onFocus($event)"
+      (blur)="inputFocus = false"
       class="border border-gray-400 rounded text-xl"
     />
     <button
       title="button"
-      (click)="search(searchInput.value); fuzzyQueryData = []"
+      (click)="search(searchInput.value);"
       [disabled]="loading"
     >
       搜尋 @if (loading) {
@@ -22,7 +23,7 @@
     </button>
 
     <!-- 模糊查詢 -->
-    @if (fuzzyQueryData.length > 0) {
+    @if (fuzzyQueryData.length > 0 && inputFocus) {
     <ul
       class="border-purple-500 border rounded inline-block py-3 mt-2 absolute top-6 left-0 bg-white"
     >

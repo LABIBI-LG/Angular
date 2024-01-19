@@ -13,6 +13,7 @@ import {
   finalize,
   map,
   switchMap,
+  takeWhile,
   tap,
 } from 'rxjs';
 
@@ -40,6 +41,7 @@ export class SearchComponent {
   private _http = inject(HttpClient);
 
   baseApiUrl = 'https://api.github.com/search/repositories'; // Github API
+  inputFocus = false; // 輸入框是否聚焦
   loading = false; // 是否正在載入資料
   data: DataModel[] = []; // 資料列表
   searchData: SearchModel = {
@@ -49,15 +51,16 @@ export class SearchComponent {
     page: 1,
   };
 
-  keyUp = new Subject<string>(); // 輸入框鍵盤事件
+  focus = new Subject<string>(); // 聚焦 input 流
   sortBy$ = new BehaviorSubject({ sort: 'stars', order: 'desc' }); // 排序資訊
 
   fuzzyQueryData: string[] = [];
 
   ngOnInit(): void {
     // 設定模糊查詢 RxJS 流
-    this.keyUp
+    this.focus
       .pipe(
+        takeWhile(() => this.inputFocus), // 當輸入框聚焦時才發送
         debounceTime(300), // 等待時間，避免立即響應每次按鍵
         distinctUntilChanged(), // 只有當輸入值變化時才發送
         map((value) => value.trim()), // 去除前後空格
@@ -144,8 +147,9 @@ export class SearchComponent {
     }
   };
   // 鍵盤事件
-  onKeyUp(event: KeyboardEvent) {
-    this.keyUp.next((<HTMLInputElement>event.target).value);
+  onFocus(event: Event) {
+    this.inputFocus = true;
+    this.focus.next((<HTMLInputElement>event.target).value);
   }
 
   // 取得 Github 資料

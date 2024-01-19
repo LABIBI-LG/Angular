@@ -1,8 +1,8 @@
 <section>
   @if(data$ | async; as data){
-  <ul>
+  <ul class="border mt-3">
     @for(item of data.todos ; track $index){
-    <li>
+    <li class="py-1 border-b last:border-0 px-3">
       <input
         type="checkbox"
         id="item-{{ $index }}"
