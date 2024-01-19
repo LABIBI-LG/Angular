@@ -1,0 +1,18 @@
+<section>
+  <div class="relative">
+    <input
+      #addInput
+      type="text"
+      id="searchInput"
+      name="searchInput"
+      class="border border-gray-400 rounded text-xl"
+    />
+    <button
+      title="button"
+      (click)="addItem(addInput.value); addInput.value = ''"
+    >
+      Add
+      <!-- <span class="spinner"></span> -->
+    </button>
+  </div>
+</section>
