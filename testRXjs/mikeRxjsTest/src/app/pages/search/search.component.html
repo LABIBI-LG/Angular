@@ -8,13 +8,14 @@
       id="searchInput"
       name="searchInput"
       [disabled]="loading"
-      (focus)="onFocus($event)"
+      (keyup)="onKeyUp($event)"
+      (focus)="inputFocus = true"
       (blur)="inputFocus = false"
       class="border border-gray-400 rounded text-xl"
     />
     <button
       title="button"
-      (click)="search(searchInput.value);"
+      (click)="search(searchInput.value); fuzzyQueryData = []"
       [disabled]="loading"
     >
       搜尋 @if (loading) {

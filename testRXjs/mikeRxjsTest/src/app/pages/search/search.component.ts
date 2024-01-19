@@ -51,16 +51,15 @@ export class SearchComponent {
     page: 1,
   };
 
-  focus = new Subject<string>(); // 聚焦 input 流
+  keyUp$ = new Subject<string>(); // 輸入框鍵盤事件
   sortBy$ = new BehaviorSubject({ sort: 'stars', order: 'desc' }); // 排序資訊
 
-  fuzzyQueryData: string[] = [];
+  fuzzyQueryData: string[] = []; // 模糊查詢資料
 
   ngOnInit(): void {
     // 設定模糊查詢 RxJS 流
-    this.focus
+    this.keyUp$
       .pipe(
-        takeWhile(() => this.inputFocus), // 當輸入框聚焦時才發送
         debounceTime(300), // 等待時間，避免立即響應每次按鍵
         distinctUntilChanged(), // 只有當輸入值變化時才發送
         map((value) => value.trim()), // 去除前後空格
@@ -147,9 +146,8 @@ export class SearchComponent {
     }
   };
   // 鍵盤事件
-  onFocus(event: Event) {
-    this.inputFocus = true;
-    this.focus.next((<HTMLInputElement>event.target).value);
+  onKeyUp(event: KeyboardEvent) {
+    this.keyUp$.next((<HTMLInputElement>event.target).value);
   }
 
   // 取得 Github 資料
