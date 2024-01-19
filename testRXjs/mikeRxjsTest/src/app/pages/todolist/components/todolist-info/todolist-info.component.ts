@@ -1,7 +1,7 @@
-import { Component, inject } from '@angular/core';
-import { SubjectService } from '../../services/subject.service';
 import { CommonModule } from '@angular/common';
-import { Subject, takeUntil, tap } from 'rxjs';
+import { Component, inject } from '@angular/core';
+import { tap } from 'rxjs';
+import { SubjectService } from '../../services/subject.service';
 
 @Component({
   selector: 'app-todolist-info',
@@ -13,18 +13,10 @@ import { Subject, takeUntil, tap } from 'rxjs';
 export class TodolistInfoComponent {
   private _subjectService = inject(SubjectService);
 
-  destroy$ = new Subject<void>();
   todosCont = 0;
-  data$ = this._subjectService.store$;
-
-  ngOnInit(): void {
-    this._subjectService.store$.pipe(
-      takeUntil(this.destroy$),
-      tap((state) => {
+  data$ = this._subjectService.store$.pipe(
+    tap((state) => {
       this.todosCont = state.todos.filter((todo) => todo.done).length;
-    })).subscribe();
-  }
-  ngOnDestroy(): void {
-    this.destroy$.next();
-  }
+    })
+  );
 }
