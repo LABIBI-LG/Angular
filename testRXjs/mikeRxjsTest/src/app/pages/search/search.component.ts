@@ -153,9 +153,11 @@ export class SearchComponent {
   // 取得 Github 資料
   getGithubData$(data: SearchModel): Observable<DataModel[]> {
     let apiUrl = `${this.baseApiUrl}?q=${data.tempKeyword}`;
+
     if (!!data.per_page && !!data.page) {
-      apiUrl = apiUrl + `&per_page=${data.per_page}` + `&page=${data.page}`;
+      apiUrl = `${apiUrl}&per_page=${data.per_page}&page=${data.page}`;
     }
+
     return this._http.get(apiUrl).pipe(
       catchError((err) => {
         alert(err.message);
